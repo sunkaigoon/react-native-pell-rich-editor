@@ -137,8 +137,8 @@ const HTML = `
                 }
             },
             image: {
-                result: function(url) {
-                    if (url) { exec('insertHTML', "<br><div><img src='"+ url +"'/></div><br>");}
+                result: function({ url, imgId }) {
+                    if (url) { exec('insertHTML', "<br><div><img imgId=" + imgId +" src='"+ url +"'/></div><br>");}
                 }
             },
             content: {
