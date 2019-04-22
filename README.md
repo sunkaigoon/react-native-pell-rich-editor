@@ -4,7 +4,7 @@
 [![NPM](https://img.shields.io/npm/v/react-native-pell-rich-editor.svg)](https://www.npmjs.com/package/react-native-pell-rich-editor)
 
 ------
-
+# Base on react-native-pell-rich-editor: https://github.com/stulip/react-native-pell-rich-editor
 > A fully functional Rich Text Editor for both Android and iOS
 
 ```
