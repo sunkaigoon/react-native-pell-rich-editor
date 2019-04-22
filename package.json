@@ -1,15 +1,15 @@
 {
-  "name": "react-native-pell-rich-editor",
-  "description": "React Native Rich Editor",
-  "version": "1.0.4",
+  "name": "react-native-pell-rich-editor-sk",
+  "description": "React Native Rich Editor, base on react-native-pell-rich-editor",
+  "version": "1.0.1",
   "main": "index.js",
   "author": {
-    "name": "stulip",
-    "email": "stulip@126.com"
+    "name": "sunkaigoon",
+    "email": "1136181755@qq.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/stulip/react-native-pell-rich-editor.git"
+    "url": "https://github.com/sunkaigoon/react-native-pell-rich-editor.git"
   },
   "dependencies": {
 

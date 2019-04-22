@@ -132,7 +132,7 @@ const HTML = `
             },
             link: {
                 result: function() {
-                    var url = window.prompt('Enter the link URL');
+                    var url = window.prompt('请输入链接地址');
                     if (url) exec('createLink', url);
                 }
             },
