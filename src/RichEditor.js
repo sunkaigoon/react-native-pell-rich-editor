@@ -182,7 +182,7 @@ export default class RichTextEditor extends Component {
         this._sendAction(actions.content, 'focus');
     }
 
-    insertImage(attributes: { url: string, imgId: string }) {
+    insertImage(attributes: { imageArr: Object, fatherArr: Object }) {
         this._sendAction(actions.insertImage, "result", attributes);
     }
 

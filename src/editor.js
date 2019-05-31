@@ -137,8 +137,28 @@ const HTML = `
                 }
             },
             image: {
-                result: function({ url, imgId }) {
-                    if (url) { exec('insertHTML', "<br><div><img imgId=" + imgId +" src='"+ url +"'/></div><br>");}
+                result: function({imageArr, fatherArr }) {
+                    if (imageArr && imageArr.src) {
+                        var div = "<div";
+                        var img = "<img";
+                        if (fatherArr && Object.keys(fatherArr).length > 0) {
+                            var fArrKeys = Object.keys(fatherArr);
+                            fArrKeys.forEach((k) => {
+                                var fYh = "";
+                                if (typeof fatherArr[k] === 'string') fYh = "'";
+                                div = div + " " + k + "=" + fYh + fatherArr[k] + fYh;
+                            });
+                        }
+                        var iArrKeys = Object.keys(imageArr);
+                        iArrKeys.forEach((k) => {
+                            var iYh = "";
+                            if (typeof imageArr[k] === 'string') iYh = "'";
+                            img = img + " " + k + "=" + iYh + imageArr[k] + iYh;
+                        });
+                        div += ">";
+                        img += "/>"
+                        exec('insertHTML', "<br>" + div + img + "</div><br>");
+                    }
                 }
             },
             content: {
