@@ -137,7 +137,7 @@ const HTML = `
                 }
             },
             image: {
-                result: function({imageArr, fatherArr }) {
+                result: function({imageArr, fatherArr}) {
                     if (imageArr && imageArr.src) {
                         var div = "<div";
                         var img = "<img";
@@ -158,6 +158,31 @@ const HTML = `
                         div += ">";
                         img += "/>"
                         exec('insertHTML', "<br>" + div + img + "</div><br>");
+                    }
+                }
+            },
+            video: {
+                result: function({videoArr, fatherArr}) {
+                    if (videoArr && videoArr.src) {
+                        var vdiv = "<div";
+                        var video = "<video";
+                        if (fatherArr && Object.keys(fatherArr).length > 0) {
+                            var fArrKeys = Object.keys(fatherArr);
+                            fArrKeys.forEach((k) => {
+                                var fYh = "";
+                                if (typeof fatherArr[k] === 'string') fYh = "'";
+                                vdiv = vdiv + " " + k + "=" + fYh + fatherArr[k] + fYh;
+                            });
+                        }
+                        var iArrKeys = Object.keys(videoArr);
+                        iArrKeys.forEach((k) => {
+                            var iYh = "";
+                            if (typeof videoArr[k] === 'string') iYh = "'";
+                            video = video + " " + k + "=" + iYh + videoArr[k] + iYh;
+                        });
+                        vdiv += ">";
+                        video += "/>"
+                        exec('insertHTML', "<br>" + vdiv + video + "</div><br>");
                     }
                 }
             },

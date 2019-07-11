@@ -124,13 +124,15 @@ export default class RichTextEditor extends Component {
 
     render() {
         let {height} = this.state;
+        let { style, webViewStyle, ...others } = this.props;
 
         return (
             <View style={[this.props.style, {height: height || Dimensions.get('window').height * 0.7}]}>
                 <WebView
+                    style={[{ flex: 1 }, webViewStyle]}
                     useWebKit={true}
                     scrollEnabled={false}
-                    {...this.props}
+                    {...others}
                     hideKeyboardAccessoryView={true}
                     keyboardDisplayRequiresUserAction={false}
                     ref={(r) => {
@@ -184,6 +186,10 @@ export default class RichTextEditor extends Component {
 
     insertImage(attributes: { imageArr: Object, fatherArr: Object }) {
         this._sendAction(actions.insertImage, "result", attributes);
+    }
+
+    insertVideo(attributes: { videoArr: Object, fatherArr: Object }) {
+        this._sendAction(actions.insertVideo, "result", attributes);
     }
 
     init() {

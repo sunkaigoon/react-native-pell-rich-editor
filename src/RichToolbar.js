@@ -19,6 +19,7 @@ function getDefaultIcon() {
   texts[actions.insertBulletsList] = require('../img/icon_format_ul.png');
   texts[actions.insertOrderedList] = require('../img/icon_format_ol.png');
   texts[actions.insertLink] = require('../img/icon_format_link.png');
+  texts[actions.insertVideo] = require('../img/icon_format_mov.png');
   return texts;
 }
 
@@ -44,7 +45,7 @@ export default class RichToolbar extends Component {
       editor: undefined,
       selectedItems: [],
       actions,
-        data: this.getRows(actions, [])
+      data: this.getRows(actions, [])
     };
   }
 
@@ -52,9 +53,9 @@ export default class RichToolbar extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     let that = this;
     return nextProps.actions !== that.props.actions
-          || nextState.editor !== that.state.editor
-          || nextState.selectedItems !== that.state.selectedItems
-          || nextState.actions !== that.state.actions
+        || nextState.editor !== that.state.editor
+        || nextState.selectedItems !== that.state.selectedItems
+        || nextState.actions !== that.state.actions
   }
   //---- new-e-----
 
@@ -72,10 +73,8 @@ export default class RichToolbar extends Component {
   }
 
   componentDidMount() {
-    const editor = this.props.getEditor();
-    if (!editor) {
-      throw new Error('Toolbar has no editor!');
-    } else {
+    const editor = this.props.getEditor ? this.props.getEditor() : this.props.editor;
+    if (editor) {
       editor.registerToolbar((selectedItems) => this.setSelectedItems(selectedItems));
       this.setState({editor});
     }
@@ -88,6 +87,11 @@ export default class RichToolbar extends Component {
         data: this.getRows(this.state.actions, selectedItems)
       });
     }
+  }
+
+  setEditor(editor) {
+    editor.registerToolbar((selectedItems) => this.setSelectedItems(selectedItems));
+    this.setState({editor});
   }
 
   _getButtonSelectedStyle() {
@@ -111,16 +115,16 @@ export default class RichToolbar extends Component {
   _defaultRenderAction(action, selected) {
     const icon = this._getButtonIcon(action);
     return (
-      <TouchableOpacity
-          key={action}
-          style={[
-            {height: 50, width: 50, justifyContent: 'center'},
-            selected ? this._getButtonSelectedStyle() : this._getButtonUnselectedStyle()
-          ]}
-          onPress={() => this._onPress(action)}
-      >
-        {icon ? <Image source={icon} style={{tintColor: selected ? this.props.selectedIconTint : this.props.iconTint}}/> : null}
-      </TouchableOpacity>
+        <TouchableOpacity
+            key={action}
+            style={[
+              {height: 50, width: 50, justifyContent: 'center'},
+              selected ? this._getButtonSelectedStyle() : this._getButtonUnselectedStyle()
+            ]}
+            onPress={() => this._onPress(action)}
+        >
+          {icon ? <Image source={icon} style={{tintColor: selected ? this.props.selectedIconTint : this.props.iconTint}}/> : null}
+        </TouchableOpacity>
     );
   }
 
@@ -132,22 +136,25 @@ export default class RichToolbar extends Component {
 
   render() {
     return (
-      <View
-          style={[{height: 50, backgroundColor: '#D3D3D3', alignItems: 'center'}, this.props.style]}
-      >
-        <FlatList
-            horizontal
-            keyExtractor={(item, index) => item.action + '-' + index}
-            data={this.state.data}
-            alwaysBounceHorizontal={false}
-            showsHorizontalScrollIndicator={false}
-            renderItem= {({item}) => this._renderAction(item.action, item.selected)}
-        />
-      </View>
+        <View
+            style={[{height: 50, backgroundColor: '#D3D3D3', alignItems: 'center'}, this.props.style]}
+        >
+          <FlatList
+              horizontal
+              keyExtractor={(item, index) => item.action + '-' + index}
+              data={this.state.data}
+              alwaysBounceHorizontal={false}
+              showsHorizontalScrollIndicator={false}
+              renderItem= {({item}) => this._renderAction(item.action, item.selected)}
+          />
+        </View>
     );
   }
 
   _onPress(action) {
+    if (!this.state.editor) {
+      throw new Error('Toolbar has no editor!');
+    }
     switch(action) {
       case actions.setBold:
       case actions.setItalic:
@@ -178,6 +185,11 @@ export default class RichToolbar extends Component {
       case actions.insertImage:
         if(this.props.onPressAddImage) {
           this.props.onPressAddImage();
+        }
+        break;
+      case actions.insertVideo:
+        if(this.props.onPressAddVideo) {
+          this.props.onPressAddVideo();
         }
         break;
     }
