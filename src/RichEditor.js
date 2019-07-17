@@ -25,11 +25,13 @@ export default class RichTextEditor extends Component {
         this._onKeyboardWillHide = this._onKeyboardWillHide.bind(this);
         this.isInit = false;
         this.state = {
-            selectionChangeListeners: [],
+            // selectionChangeListeners: [],
             keyboardHeight: 0,
             height: 0,
         };
+        this.selectionChangeListeners = [];
         this.focusListeners = [];
+        this.blurListeners = [];
     }
 
     componentWillMount() {
@@ -97,7 +99,7 @@ export default class RichTextEditor extends Component {
                     break;
                 case messages.SELECTION_CHANGE: {
                     const items = message.data;
-                    this.state.selectionChangeListeners.map((listener) => {
+                    this.selectionChangeListeners.map((listener) => {
                         listener(items);
                     });
                     break;
@@ -108,6 +110,9 @@ export default class RichTextEditor extends Component {
                 }
                 case messages.OFFSET_HEIGHT:
                     this.setWebHeight(message.data);
+                    break;
+                case messages.CONTENT_BLUR:
+                    this.blurListeners.map(da => da(message.data));
                     break;
             }
         } catch (e) {
@@ -133,8 +138,13 @@ export default class RichTextEditor extends Component {
                     useWebKit={true}
                     scrollEnabled={false}
                     {...others}
-                    hideKeyboardAccessoryView={true}
-                    keyboardDisplayRequiresUserAction={false}
+                    // hideKeyboardAccessoryView={true}
+                    // keyboardDisplayRequiresUserAction={false}
+                    allowFileAccess
+                    allowsFullscreenVideo
+                    allowsInlineMediaPlayback
+                    mediaPlaybackRequiresUserAction={false}
+                    allowFileAccess
                     ref={(r) => {
                         this.webviewBridge = r
                     }}
@@ -163,14 +173,19 @@ export default class RichTextEditor extends Component {
     //--------------- Public API
 
     registerToolbar(listener) {
-        this.setState({
-            selectionChangeListeners: [...this.state.selectionChangeListeners, listener]
-        });
+        // this.setState({
+        //     selectionChangeListeners: [...this.state.selectionChangeListeners, listener]
+        // });
+        this.selectionChangeListeners.push(listener);
     }
 
     setContentFocusHandler (listener){
         this.focusListeners.push(listener);
     }
+
+    setContentBlurHandler (listener) {
+        this.blurListeners.push(listener);
+    };
 
     setContentHTML(html) {
         this._sendAction(actions.content, "setHtml", html);

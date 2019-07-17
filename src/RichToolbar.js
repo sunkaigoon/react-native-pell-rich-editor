@@ -73,10 +73,12 @@ export default class RichToolbar extends Component {
   }
 
   componentDidMount() {
-    const editor = this.props.getEditor ? this.props.getEditor() : this.props.editor;
-    if (editor) {
-      editor.registerToolbar((selectedItems) => this.setSelectedItems(selectedItems));
-      this.setState({editor});
+    if (!this.state.editor) {
+      const editor = this.props.getEditor ? this.props.getEditor() : this.props.editor;
+      if (editor) {
+        editor.registerToolbar((selectedItems) => this.setSelectedItems(selectedItems));
+        this.setState({editor});
+      }
     }
   }
 
